@@ -2,6 +2,10 @@ import materias.*
 
 class Carrera {
     const property materias = #{}
+
+    method materiasDelAño(año) {
+        return materias.filter({ materia => materia.año() == año })
+    }
 }
 
 const programacion = new Carrera(
