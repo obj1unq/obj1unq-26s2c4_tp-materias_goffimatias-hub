@@ -32,6 +32,14 @@ class Estudiante {
             materia.cumpleRequisitos(self)
         )
     }
+   
+    method materiasEnListaDeEspera() {
+        return self.materias().filter({materia => materia.estaEnListaDeEspera(self)})
+    }
+
+    method materiasInscripto() {
+        return self.materias().filter({materia => materia.estaConfirmado(self)})
+    }
 
     // Por carrera
     method cantidadAprobadasEn(carrera) {
@@ -40,6 +48,10 @@ class Estudiante {
 
     method creditosAcumulados() {
         return materiasAprobadas.map({materiaAprobada => materiaAprobada.materia().creditos()}).sum()
+    }
+
+    method materiasALasQueSePuedeInscribirEn(carrera) {
+        return carrera.materias().filter({ m => self.puedeInscribirse(m) })
     }
 
     // Acciones

@@ -61,8 +61,8 @@ class Materia {
     const cupo
     const creditos
     const año
-    var property alumnosInscriptos = #{}
-    var property listaDeEspera = [] 
+    const alumnosInscriptos = #{}
+    const listaDeEspera = [] 
     const requisito = sinRequisitos
     const estrategiaListaDeEspera = porOrdenDeLlegada
   
@@ -96,6 +96,21 @@ class Materia {
         return estrategiaListaDeEspera.siguiente(listaDeEspera)
     }
 
+    method listaDeEspera() {
+        return listaDeEspera
+    }
+
+    method alumnosInscriptos() {
+        return alumnosInscriptos
+    }
+
+    method estaConfirmado(estudiante) {
+        return self.alumnosInscriptos().contains(estudiante)
+    }
+
+    method estaEnListaDeEspera(estudiante) {
+        return self.listaDeEspera().contains(estudiante)
+    }
 
     // Acciones
     method validarInscripcion(estudiante) {
@@ -113,6 +128,20 @@ class Materia {
         }
 
     }
+
+    method darDeBaja(estudiante) {
+        alumnosInscriptos.remove(estudiante)
+        self.procesarSiguienteEnEspera()
+    }
+
+    method procesarSiguienteEnEspera() {
+        if ( not listaDeEspera.isEmpty() ) {
+            const siguiente = self.siguienteEnListaDeEspera()
+            listaDeEspera.remove(siguiente)
+            alumnosInscriptos.add(siguiente)
+        }
+    }
+
 }
 
 class MateriaAprobada {
@@ -144,14 +173,14 @@ const objetos1 = new Materia(
 const objetos2 = new Materia(
     nombre = "Objetos 2", 
     requisito = new Correlativa(materias = #{objetos1, matematica1}),
-    cupo = 20,
+    cupo = 3,
     creditos = 10,
     año = 2
 )
 
 const objetos3 = new Materia(
     nombre = "Objetos 3",
-    requisito = new PorAño(carrera = programacion, año = 3),
+    requisito = new Correlativa(materias = #{objetos2, basesDeDatos}),
     cupo = 20,
     creditos = 10,
     año = 3
