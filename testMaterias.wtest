@@ -1,0 +1,99 @@
+import carreras.*
+import estudiantes.*
+import materias.*
+
+describe "Inscripcion de materias" {
+
+  // MATERIAS
+  const programacionConcurrente = new Materia(
+    nombre = "Programación Concurrente",
+    cupo = 20,
+    creditos = 10,
+    año = 2
+  )
+
+  // ESTUDIANTES
+  const luisa = new Estudiante(
+    carreras = #{programacion},
+    materiasAprobadas = #{
+      new MateriaAprobada(materia = elementosDeProgramacion, nota = 8),
+      new MateriaAprobada(materia = objetos1, nota = 7),
+      new MateriaAprobada(materia = matematica1, nota = 7)
+    }
+  )
+  const romina = new Estudiante(
+    carreras = #{programacion},
+    materiasAprobadas = #{
+      new MateriaAprobada(materia = elementosDeProgramacion, nota = 8),
+      new MateriaAprobada(materia = objetos1, nota = 7),
+      new MateriaAprobada(materia = matematica1, nota = 7)
+    }
+  )
+  const alicia = new Estudiante(
+    carreras = #{programacion},
+    materiasAprobadas = #{
+      new MateriaAprobada(materia = elementosDeProgramacion, nota = 8),
+      new MateriaAprobada(materia = objetos1, nota = 7),
+      new MateriaAprobada(materia = matematica1, nota = 7)
+    }
+  )
+  const ana = new Estudiante(
+    carreras = #{programacion},
+    materiasAprobadas = #{
+      new MateriaAprobada(materia = elementosDeProgramacion, nota = 8)
+    }
+  )
+
+
+  method initialize() {
+    // Requisitos
+    objetos2.requisito(new Correlativa(materias = #{objetos1, matematica1}))
+    objetos3.requisito(new Correlativa(materias = #{objetos2, basesDeDatos}))
+    biologia2.requisito(new Correlativa(materias = #{biologia1}))
+    programacionConcurrente.requisito(new Correlativa(materias = #{objetos1, basesDeDatos}))
+
+    // Agrego materia a la carrera de programación
+    programacion.materias().add(programacionConcurrente)
+
+    // Materias aprobadas
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = matematica1, nota = 8))
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = objetos1, nota = 7))
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = elementosDeProgramacion, nota = 8))
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = basesDeDatos, nota = 8))
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = quimica, nota = 7))
+    roque.materiasAprobadas().add(new MateriaAprobada(materia = biologia1, nota = 8))
+    
+  } 
+
+  test "Roque puede inscribirse en Objetos 2, pero no en Objetos 3" {
+    assert.that(roque.puedeInscribirse(objetos2))
+    assert.notThat(roque.puedeInscribirse(objetos3))
+  }
+    
+  test "Roque puede inscribirse: en Programación, en Objetos 2 y Programación Concurrente; en Medicina, en Biología 2" {
+    assert.that(roque.puedeInscribirse(objetos2))
+    assert.that(roque.puedeInscribirse(programacionConcurrente))
+    assert.that(roque.puedeInscribirse(biologia2))
+  }
+
+  test "Si se inscriben, en este orden, Luisa, Romina, Alicia y Roque en Objetos 2, entonces las tres primeras quedan confirmadas, y Roque queda en lista de espera" {
+    objetos2.inscribir(luisa)
+    objetos2.inscribir(romina)
+    objetos2.inscribir(alicia)
+    objetos2.inscribir(roque)
+    assert.that(objetos2.estaConfirmado(luisa))
+    assert.that(objetos2.estaConfirmado(romina))
+    assert.that(objetos2.estaConfirmado(alicia))
+    assert.that(objetos2.estaEnListaDeEspera(roque))
+  }
+
+  test "Si después se da de baja Romina en Objetos 2, entonces Roque pasa a tener la inscripción confirmada en esa materia" {
+    objetos2.inscribir(luisa)
+    objetos2.inscribir(romina)
+    objetos2.inscribir(alicia)
+    objetos2.inscribir(roque)
+    objetos2.darDeBaja(romina)
+    assert.that(objetos2.estaConfirmado(roque))
+  }
+
+}

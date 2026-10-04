@@ -65,9 +65,5 @@ class Estudiante {
 
 // ESTUDIANTES
 const roque = new Estudiante(
-    carreras = #{programacion, medicina},
-    materiasAprobadas = #{
-        new MateriaAprobada(materia = matematica1, nota = 8),
-        new MateriaAprobada(materia = objetos1, nota = 7)
-    }
+    carreras = #{programacion, medicina}
 )

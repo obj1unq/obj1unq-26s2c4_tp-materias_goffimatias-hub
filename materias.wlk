@@ -63,8 +63,8 @@ class Materia {
     const año
     const alumnosInscriptos = #{}
     const listaDeEspera = [] 
-    const requisito = sinRequisitos
-    const estrategiaListaDeEspera = porOrdenDeLlegada
+    var property requisito = sinRequisitos
+    var property estrategiaListaDeEspera = porOrdenDeLlegada
   
     
     // Consultas
@@ -152,7 +152,6 @@ class MateriaAprobada {
 // MATERIAS
 const elementosDeProgramacion = new Materia(
     nombre = "Elementos de Programación",
-    requisito = sinRequisitos,
     cupo = 20,
     creditos = 10,
     año = 1
@@ -172,7 +171,6 @@ const objetos1 = new Materia(
 
 const objetos2 = new Materia(
     nombre = "Objetos 2", 
-    requisito = new Correlativa(materias = #{objetos1, matematica1}),
     cupo = 3,
     creditos = 10,
     año = 2
@@ -180,7 +178,6 @@ const objetos2 = new Materia(
 
 const objetos3 = new Materia(
     nombre = "Objetos 3",
-    requisito = new Correlativa(materias = #{objetos2, basesDeDatos}),
     cupo = 20,
     creditos = 10,
     año = 3
@@ -188,7 +185,6 @@ const objetos3 = new Materia(
 
 const trabajoFinal = new Materia(
     nombre = "Trabajo Final",
-    requisito = new Credito(creditos = 250),
     cupo = 20,
     creditos = 10,
     año = 4
@@ -217,7 +213,6 @@ const biologia1 = new Materia(
 
 const biologia2 = new Materia(
     nombre = "Biología 2",
-    requisito = new Correlativa(materias = #{biologia1}),
     cupo = 20,
     creditos = 10,
     año = 2
